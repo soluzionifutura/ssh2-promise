@@ -237,12 +237,13 @@ export default class SSHConnection extends EventEmitter {
             this.sshConnection.on('keyboard-interactive', (name, instructions, lang, prompts, finish) => {
                 if (this.config.keyboardInteractive.length) {
                     finish(this.config.keyboardInteractive)
+                } else {
+                    prompts.forEach((prompt) => {
+                        SSHUtils.prompt(prompt.prompt, (password) => {
+                            finish([password]);
+                        })
+                    });
                 }
-                prompts.forEach((prompt) => {
-                    SSHUtils.prompt(prompt.prompt, (password) => {
-                        finish([password]);
-                    })
-                });
             }).on('ready', (err: Error & ClientErrorExtensions) => {
                 if (err) {
                     this.emit(SSHConstants.CHANNEL.SSH, SSHConstants.STATUS.DISCONNECT, { err: err });
