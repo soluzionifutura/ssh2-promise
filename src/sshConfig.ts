@@ -14,6 +14,7 @@ interface SSHConfig extends ConnectConfig {
     identity?: PathLike;
     /** To hop multiple connection using this tool. Default nc. Supported Value are nc, socat, native */
     hoppingTool?: string;
-    
+    /** keyboard-interactive parameters */
+    keyboardInteractive?: Array<string>;
 }
 export = SSHConfig

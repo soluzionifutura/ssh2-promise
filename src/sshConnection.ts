@@ -235,6 +235,9 @@ export default class SSHConnection extends EventEmitter {
             //Start ssh server connection
             this.sshConnection = new Client();
             this.sshConnection.on('keyboard-interactive', (name, instructions, lang, prompts, finish) => {
+                if (this.config.keyboardInteractive.length) {
+                    finish(this.config.keyboardInteractive)
+                }
                 prompts.forEach((prompt) => {
                     SSHUtils.prompt(prompt.prompt, (password) => {
                         finish([password]);
